@@ -1,16 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import homeData from '../../assets/mockdata/home.json';
 import { ModalPage } from '../modal/modal.page';
 import { modalEnterAnimation, modalLeaveAnimation } from '../modal-animation';
 import { DrawerService } from '../services/drawer.service';
+import { HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
+import { GlobalVariable } from '../globals';
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page {
+export class Tab1Page implements OnInit {
+
+  private baseApiUrl = GlobalVariable.BASE_API_URL;
+  flix_type : any = [];
+  flix_title :any = [];
 
   sections = homeData.sections;
   spotlight = homeData.spotlight;
@@ -21,8 +28,28 @@ export class Tab1Page {
     freeMode: true
   };
 
-  constructor(private modalCtrl: ModalController, private drawerService: DrawerService) {
+  constructor(private modalCtrl: ModalController, private drawerService: DrawerService,  public httpClient: HttpClient) 
+  {  
+    this.httpClient.get(this.baseApiUrl+'flix/category.php').subscribe(
+      data =>{
+        this.flix_type = data;
       }
+    );
+  }
+
+  openCategory(id)
+  {
+    this.httpClient.get(this.baseApiUrl+'flix/home.php?id='+id).subscribe(
+      data => {
+        this.flix_title = data;
+            }
+    );
+    
+  }
+
+  ngOnInit() {
+
+  }
       async openCategories() {
         const modal = await this.modalCtrl.create({
           component: ModalPage,

@@ -45,19 +45,16 @@
     </div>
   </div>
  
-  <div *ngFor="let section of sections" class="ion-padding">
-    <span class="section-title">{{ section.title }}</span>
+  <div *ngFor="let flix_type of flix_type" class="ion-padding">
+    <span class="section-title"
+    (click)="openCategory(flix_type.data.id)">{{ flix_type.data.title }}</span>
     <ion-slides [options]="opts">
  
-      <ion-slide *ngFor="let series of section.series">
-        <img *ngIf="section.type != 'continue'" [src]="'/assets/mockdata/'+section.type+'-'+series.id+'.jpg'">
-        <div class="continue" *ngIf="section.type == 'continue'">
- 
-          <img [src]="'/assets/mockdata/'+section.type+'-'+series.id+'.jpg'">
-          <div class="progress-bar">
-            
-            <div class="progress" [style.width]="series.progress + '%'"></div>
-          </div>
+      <ion-slide *ngFor="let flix_title of flix_title">
+    
+        <img src="{{ flix_title.data.logo }}">
+        <span class="section-title">{{ flix_title.data.title}}</span>
+
           <ion-row class="ion-no-padding">
             <ion-col size="6" class="ion-text-left ion-no-padding">
               <ion-button fill="clear" color="medium" size="small">
@@ -70,7 +67,7 @@
               </ion-button>
             </ion-col>
           </ion-row>
-        </div>
+        
       </ion-slide>
  
     </ion-slides>
